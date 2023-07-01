@@ -1,0 +1,41 @@
+{
+    "elements": [
+        {
+            "tag": "markdown",
+            "content": "By [{{ meta.user }}]( {{ meta.user_link }} )"
+        },
+        {
+            "tag": "markdown",
+            "content": "{{ meta.body }}"
+        },
+        {
+            "tag": "hr"
+        },
+        {
+            "tag": "action",
+            "actions": [
+                {
+                    "tag": "button",
+                    "text": {
+                        "tag": "plain_text",
+                        "content": "Show Details"
+                    },
+                    "type": "primary",
+                    "multi_url": {
+                        "url": "{{ meta.link }}",
+                        "pc_url": "",
+                        "android_url": "",
+                        "ios_url": ""
+                    }
+                }
+            ]
+        }
+    ],
+    "header": {
+        "template": "blue",
+        "title": {
+            "content": "{{ meta.title }}",
+            "tag": "plain_text"
+        }
+    }
+}
