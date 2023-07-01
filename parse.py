@@ -62,6 +62,8 @@ class Meta(object):
 class InteractivePayload(Meta):
     def __init__(self, primary, payload: Dict) -> None:
         super().__init__(payload)
+        if primary == "issues":
+            primary = "issue"
         self._primary = primary
         self._number = payload[primary]["number"]
         self._action = payload["action"]
