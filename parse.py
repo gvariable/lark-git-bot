@@ -2,12 +2,15 @@ from typing import *
 from typing import Dict
 import json
 
+__all__ = ["InteractivePayload", "PushPayload"]
+
 
 class Meta(object):
     def __init__(self, payload: Dict) -> None:
         self._sender = payload["sender"]
         self._avatar = self._sender["avatar_url"]
         self._user = self._sender["login"]
+        self._user_link = self._sender["html_url"]
         self._repo = payload["repository"]
         self._link = None
         self._title = None
@@ -26,6 +29,10 @@ class Meta(object):
         return self._user
 
     @property
+    def user_link(self) -> str:
+        return self._user_link
+
+    @property
     def link(self) -> str:
         return self._link
 
@@ -41,8 +48,18 @@ class Meta(object):
             return ""
         return self._body
 
+    def __repr__(self) -> str:
+        meta = {
+            "title": self.title,
+            "body": self.body,
+            "user": self.user,
+            "link": self.link,
+            "user_link": self.user_link,
+        }
+        return json.dumps(meta, indent=4, ensure_ascii=False)
 
-class InteractiveMessage(Meta):
+
+class InteractivePayload(Meta):
     def __init__(self, primary, payload: Dict) -> None:
         super().__init__(payload)
         self._primary = primary
@@ -58,7 +75,7 @@ class InteractiveMessage(Meta):
         return f"[{self.repo}] {primary} {self._action}: #{self._number} {self._title}"
 
 
-class Push(Meta):
+class PushPayload(Meta):
     def __init__(self, payload: Dict) -> None:
         super().__init__(payload)
         self._title = payload["head_commit"]["message"].split("\n")[0]
@@ -68,24 +85,3 @@ class Push(Meta):
     @property
     def title(self):
         return f"[{self.repo}] Push: {self._title}"
-
-
-if __name__ == "__main__":
-
-    def test(fn, primary):
-        with open(fn) as f:
-            im = InteractiveMessage(primary, json.load(f))
-            print(im.title)
-            print(im.body)
-            print(im.link)
-            print()
-
-    test("pr.json", "pull_request")
-    test("issue.json", "issue")
-
-    with open("push.json") as f:
-        p = Push(json.load(f))
-        print(p.title)
-        print(p.body)
-        print(p.link)
-        print()
