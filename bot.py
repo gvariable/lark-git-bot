@@ -29,7 +29,7 @@ async def send_card(meta):
         "timestamp": str(timestamp),
         "sign": sign,
         "msg_type": "interactive",
-        "card": json.loads(template.render(meta=meta)),
+        "card": json.loads(template.render(meta=meta),strict=False),
     }
     async with aiohttp.ClientSession() as session:
         async with session.post(url=url, json=data) as resp:

@@ -12,6 +12,7 @@ async def relay(request: web.Request):
             meta = PushPayload(data)
         case "pull_request" | "issues":
             meta = InteractivePayload(event, data)
+    print(meta)
     await send_card(meta)
     return web.Response(text="OK")
 
