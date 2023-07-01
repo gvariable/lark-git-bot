@@ -82,7 +82,7 @@ class PushPayload(Meta):
         super().__init__(payload)
         self._title = payload["head_commit"]["message"].split("\n")[0]
         self._link = payload["head_commit"]["url"]
-        self._body = payload["head_commit"]["message"].split("\n")[1:]
+        self._body = payload["head_commit"]["message"]
 
     @property
     def title(self):
