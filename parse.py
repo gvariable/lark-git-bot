@@ -80,10 +80,18 @@ class InteractivePayload(Meta):
 class PushPayload(Meta):
     def __init__(self, payload: Dict) -> None:
         super().__init__(payload)
-        self._title = payload["head_commit"]["message"].split("\n")[0]
+        self._title = f"{len(payload['commits'])} new commit"
+        self._branch = payload["ref"].split("/")[-1]
+        self._default_branch = payload["repository"]["default_branch"]
         self._link = payload["head_commit"]["url"]
-        self._body = payload["head_commit"]["message"]
+        self._body = ""
+
+        for commit in payload["commits"]:
+            id = commit["id"][:7]
+            url = commit["url"]
+            message = commit["message"]
+            self._body += f"[{id}]({url}): {message}\n"
 
     @property
     def title(self):
-        return f"[{self.repo}] Push: {self._title}"
+        return f"[{self.repo}:{self._branch}] {self._title}"
