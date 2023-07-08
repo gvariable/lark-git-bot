@@ -93,5 +93,9 @@ class PushPayload(Meta):
             self._body += f"[{id}]({url}): {message}\n"
 
     @property
+    def default_branch(self):
+        return self._default_branch
+
+    @property
     def title(self):
         return f"[{self.repo}:{self._branch}] {self._title}"

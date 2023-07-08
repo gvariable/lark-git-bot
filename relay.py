@@ -3,15 +3,27 @@ from parse import *
 from bot import send_card
 import argparse
 import os
+import json
+
+with open("config.json", "r") as f:
+    CONFIG = json.load(f)
 
 
 async def relay(request: web.Request):
     event = request.headers.get("X-GitHub-Event")
+    if event is None:
+        return web.Response(status=400, text="Only support GitHub events")
+
     data = await request.json()
     meta = None
     match event:
         case "push":
             meta = PushPayload(data)
+            if CONFIG["branches"] == "all" or meta.default_branch in CONFIG["branches"]:
+                ...
+            else:
+                return web.Response(text="OK")
+
         case "pull_request" | "issues":
             meta = InteractivePayload(event, data)
     print(meta)
