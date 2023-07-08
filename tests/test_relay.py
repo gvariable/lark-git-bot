@@ -1,10 +1,14 @@
 import unittest
 import requests
 import json
+from dotenv import load_dotenv
 
 
 class TestRelay(unittest.IsolatedAsyncioTestCase):
     def setUp(self) -> None:
+        if not load_dotenv(".env.test"):
+            # TODO(gpl): error handling
+            pass
         self.host = "localhost"
         self.port = 8080
 

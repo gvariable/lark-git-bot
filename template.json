@@ -4,9 +4,9 @@
             "tag": "markdown",
             "content": "By [{{ meta.user }}]( {{ meta.user_link }} )"
         },
-	{
-	    "tag": "hr"
-	},
+        {
+            "tag": "hr"
+        },
         {
             "tag": "markdown",
             "content": "{{ meta.body }}"
