@@ -11,7 +11,7 @@ env = Environment(loader=FileSystemLoader("./"))
 template = env.get_template("template.json")
 
 
-def gen_sign(secret, timestamp):
+def gen_sign(timestamp, secret):
     s = f"{timestamp}\n{secret}"
     hmac_code = hmac.new(s.encode("utf-8"), digestmod=hashlib.sha256).digest()
     sign = base64.b64encode(hmac_code).decode("utf-8")
